@@ -1,0 +1,42 @@
+{
+  "private": true,
+  "name": "remix-app-template",
+  "description": "",
+  "license": "",
+  "scripts": {
+    "build": "npm run build:css && remix build",
+    "build:css": "tailwindcss -o ./app/styles/tailwind.css",
+    "dev": "concurrently -p \"[{name}]\" -n \"Remix,Tailwind\" -c \"black.bgGreen.bold,black.bgBlue.bold\" \"remix dev\" \"npm run dev:css\"",
+    "dev:css": "tailwindcss --output ./app/styles/tailwind.css --watch",
+    "postinstall": "remix setup node",
+    "generate-api": "swagger-typescript-api -p http://localhost:5000/swagger-json -o ./app/api -n api.ts"
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.4.2",
+    "@heroicons/react": "^1.0.5",
+    "@remix-run/react": "^1.0.5",
+    "@remix-run/serve": "^1.0.5",
+    "@remix-run/vercel": "^1.0.5",
+    "@tailwindcss/forms": "^0.3.4",
+    "@veccu/react-calendar": "^2.3.3",
+    "clsx": "^1.1.1",
+    "date-fns": "^2.26.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "remix": "^1.0.5",
+    "tailwindcss": "^2.2.19",
+    "tiny-invariant": "^1.2.0"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "^1.0.5",
+    "@types/react": "^17.0.24",
+    "@types/react-dom": "^17.0.9",
+    "concurrently": "^6.4.0",
+    "swagger-typescript-api": "^9.3.1",
+    "typescript": "^4.1.2"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "sideEffects": false
+}
