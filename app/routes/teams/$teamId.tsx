@@ -25,6 +25,7 @@ import {
 import clsx from "clsx";
 import { getException } from "~/utils/exception.server";
 import Modal from "~/components/modal";
+import invariant from "tiny-invariant";
 
 export let meta: MetaFunction = ({
   data,
@@ -80,31 +81,54 @@ export let headers: HeadersFunction = ({ loaderHeaders }) => {
   };
 };
 
+type FormData = {
+  name: string;
+  slug: string;
+};
+
 export let action: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData();
+  const accessToken = await requireAccessToken(request);
+  const teamId = Number(params.teamId ?? -1);
 
-  if (formData.get("_method") === "delete") {
-    const accessToken = await requireAccessToken(request);
-    const teamId = Number(params.teamId ?? -1);
-
-    try {
+  try {
+    if (formData.get("_method") === "delete") {
       await api.teams.deleteTeam(teamId, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
       return redirect(`/teams`);
-    } catch (error) {
-      const exception = getException(error);
+    } else {
+      const { name, slug } = Object.fromEntries(formData);
 
-      if ([404, 403, 401].includes(exception.statusCode)) {
-        throw new Response(exception.message, { status: exception.statusCode });
+      const errors: Partial<FormData> = {};
+      if (!name) errors.name = "Name is required";
+      if (!slug) errors.slug = "Slug is required";
+
+      if (Object.keys(errors).length) {
+        return errors;
       }
 
-      throw error;
-    }
-  }
+      invariant(typeof name === "string");
+      invariant(typeof slug === "string");
 
-  return null;
+      await api.teams.updateTeam(
+        teamId,
+        { name, slug },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      return redirect("/teams");
+    }
+  } catch (error) {
+    const exception = getException(error);
+
+    // TODO: handle errors better in api
+    if ([400, 409].includes(exception.statusCode)) {
+      return { slug: exception.message };
+    }
+
+    throw error;
+  }
 };
 
 export default function Team() {
@@ -127,7 +151,7 @@ export default function Team() {
         <Form method="delete">
           <div className="shadow border sm:rounded-md sm:overflow-hidden">
             <div className=" px-4 py-5 bg-white space-y-6 sm:p-6">
-              <div className="">
+              <div>
                 <label
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-700"
@@ -140,13 +164,14 @@ export default function Team() {
                   id="name"
                   className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300"
                   placeholder="Your team name"
+                  defaultValue={team?.name}
                 />
                 {errors?.name ? (
                   <p className="mt-2 text-sm text-red-500">{errors.name}</p>
                 ) : null}
               </div>
 
-              <div className="">
+              <div>
                 <label
                   htmlFor="slug"
                   className={clsx(
@@ -167,6 +192,7 @@ export default function Team() {
                   placeholder="Your team slug"
                   onChange={(e) => setSlug(e.target.value)}
                   autoComplete="off"
+                  defaultValue={team?.slug}
                 />
                 {errors?.slug ? (
                   <p className="mt-2 text-sm text-red-500">{errors.slug}</p>
@@ -176,27 +202,6 @@ export default function Team() {
                     http://calenduo.com/teams/{slug.toLowerCase()}
                   </p>
                 ) : null}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="about"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  About
-                </label>
-                <div className="mt-1">
-                  <textarea
-                    id="about"
-                    name="about"
-                    rows={3}
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
-                    placeholder="you@example.com"
-                  />
-                </div>
-                <p className="mt-2 text-sm text-gray-500">
-                  Brief description for your profile. URLs are hyperlinked.
-                </p>
               </div>
             </div>
             <div className="px-4 py-3 bg-gray-50 sm:px-6 flex justify-end gap-x-2">
