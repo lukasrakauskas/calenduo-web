@@ -1,33 +1,33 @@
-import type { MetaFunction, LoaderFunction } from 'remix';
-import { useLoaderData, json } from 'remix';
-import { User } from '~/api';
-import Footer from '~/components/footer';
-import Header from '~/components/header';
-import { getUser } from '~/utils/session.server';
+import type {MetaFunction, LoaderFunction} from 'remix'
+import {useLoaderData, json} from 'remix'
+import {User} from '~/api'
+import Footer from '~/components/footer'
+import Header from '~/components/header'
+import {getUser} from '~/utils/session.server'
 
 export let meta: MetaFunction = () => {
   return {
     title: 'Calenduo',
     description: 'Welcome to Calenduo!',
-  };
-};
+  }
+}
 
 type IndexData = {
-  user: User | null;
-};
+  user: User | null
+}
 
-export let loader: LoaderFunction = async ({ request }) => {
-  const user = await getUser(request);
+export let loader: LoaderFunction = async ({request}) => {
+  const user = await getUser(request)
 
   const data: IndexData = {
     user,
-  };
+  }
 
-  return data;
-};
+  return data
+}
 
 export default function Index() {
-  const { user } = useLoaderData<IndexData>();
+  const {user} = useLoaderData<IndexData>()
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -40,5 +40,5 @@ export default function Index() {
       </div>
       <Footer />
     </div>
-  );
+  )
 }

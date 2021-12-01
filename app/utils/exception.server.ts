@@ -1,4 +1,4 @@
-import { Exception } from '~/api';
+import {Exception} from '~/api'
 
 export const getException = (error: any): Exception => {
   if (
@@ -7,7 +7,7 @@ export const getException = (error: any): Exception => {
     'statusCode' in error.error &&
     'message' in error.error
   ) {
-    return error.error;
+    return error.error
   }
-  throw error;
-};
+  throw error
+}

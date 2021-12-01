@@ -1,17 +1,17 @@
-import { Fragment, PropsWithChildren, ReactNode, useRef } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import { ExclamationIcon } from '@heroicons/react/outline';
-import { useTransition } from 'remix';
+import {Fragment, PropsWithChildren, ReactNode, useRef} from 'react'
+import {Dialog, Transition} from '@headlessui/react'
+import {ExclamationIcon} from '@heroicons/react/outline'
+import {useTransition} from 'remix'
 
 interface Props {
-  open: boolean;
-  title: string;
-  content: ReactNode;
-  submitLabel?: string;
-  cancelLabel?: string;
-  onSubmit?: () => void;
-  onCancel?: () => void;
-  disabled?: boolean;
+  open: boolean
+  title: string
+  content: ReactNode
+  submitLabel?: string
+  cancelLabel?: string
+  onSubmit?: () => void
+  onCancel?: () => void
+  disabled?: boolean
 }
 
 export default function Modal({
@@ -24,7 +24,7 @@ export default function Modal({
   onCancel = () => {},
   disabled = false,
 }: PropsWithChildren<Props>) {
-  const cancelButtonRef = useRef(null);
+  const cancelButtonRef = useRef(null)
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -105,5 +105,5 @@ export default function Modal({
         </div>
       </Dialog>
     </Transition.Root>
-  );
+  )
 }

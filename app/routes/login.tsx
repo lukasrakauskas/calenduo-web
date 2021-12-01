@@ -1,79 +1,79 @@
-import { Form, useActionData, useTransition } from 'remix';
-import type { MetaFunction, ActionFunction, HeadersFunction } from 'remix';
-import { LockClosedIcon } from '@heroicons/react/solid';
+import {Form, useActionData, useTransition} from 'remix'
+import type {MetaFunction, ActionFunction, HeadersFunction} from 'remix'
+import {LockClosedIcon} from '@heroicons/react/solid'
 
-import Logo from '~/components/logo';
-import { createUserSession, login } from '~/utils/session.server';
+import Logo from '~/components/logo'
+import {createUserSession, login} from '~/utils/session.server'
 
 export const meta: MetaFunction = () => {
-  return { title: 'Login | Calenduo', description: 'Login to Calenduo' };
-};
+  return {title: 'Login | Calenduo', description: 'Login to Calenduo'}
+}
 
 export let headers: HeadersFunction = () => {
   return {
     'Cache-Control': `public, max-age=${60 * 10}, s-maxage=${
       60 * 60 * 24 * 30
     }`,
-  };
-};
+  }
+}
 
 function validateEmail(email: unknown) {
   if (typeof email !== 'string' || email.length < 3) {
-    return `Email must be at least 3 characters long`;
+    return `Email must be at least 3 characters long`
   }
 }
 
 function validatePassword(password: unknown) {
   if (typeof password !== 'string' || password.length < 6) {
-    return `Passwords must be at least 6 characters long`;
+    return `Passwords must be at least 6 characters long`
   }
 }
 
 type LoginForm = {
-  email: string;
-  password: string;
-};
+  email: string
+  password: string
+}
 
 type ActionData = {
-  error?: string;
-  fields?: LoginForm;
-};
+  error?: string
+  fields?: LoginForm
+}
 
 export let action: ActionFunction = async ({
   request,
 }): Promise<Response | ActionData> => {
-  let { email, password } = Object.fromEntries(await request.formData());
+  let {email, password} = Object.fromEntries(await request.formData())
   if (typeof email !== 'string' || typeof password !== 'string') {
-    return { error: `Form not submitted correctly.` };
+    return {error: `Form not submitted correctly.`}
   }
 
-  let fields = { email, password };
+  let fields = {email, password}
 
-  let emailError = validateEmail(email);
+  let emailError = validateEmail(email)
   if (emailError) {
-    return { error: emailError, fields };
+    return {error: emailError, fields}
   }
 
-  let passwordError = validatePassword(password);
+  let passwordError = validatePassword(password)
   if (passwordError) {
-    return { error: passwordError, fields };
+    return {error: passwordError, fields}
   }
 
-  const accessToken = await login({ email, password });
+  const accessToken = await login({email, password})
 
   if (!accessToken) {
     return {
       fields,
       error: `Username/Password combination is incorrect`,
-    };
+    }
   }
 
-  return createUserSession(accessToken, '/dashboard');
-};
+  return createUserSession(accessToken, '/dashboard')
+}
 
 export default function Login() {
-  const transition = useTransition();
-  const actionData = useActionData<ActionData>();
+  const transition = useTransition()
+  const actionData = useActionData<ActionData>()
 
   return (
     <div className="flex items-center justify-center px-4 py-12 min-h-full sm:px-6 lg:px-8">
@@ -179,5 +179,5 @@ export default function Login() {
         </Form>
       </div>
     </div>
-  );
+  )
 }

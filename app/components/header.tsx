@@ -1,27 +1,27 @@
-import { Fragment } from 'react';
-import { NavLink, Form } from 'remix';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
-import clsx from 'clsx';
+import {Fragment} from 'react'
+import {NavLink, Form} from 'remix'
+import {Disclosure, Menu, Transition} from '@headlessui/react'
+import {BellIcon, MenuIcon, XIcon} from '@heroicons/react/outline'
+import clsx from 'clsx'
 
-import Logo from './logo';
-import { User } from '~/api';
+import Logo from './logo'
+import {User} from '~/api'
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard' },
-  { name: 'Teams', href: '/teams' },
+  {name: 'Dashboard', href: '/dashboard'},
+  {name: 'Teams', href: '/teams'},
   // { name: "Jobs", href: "/jobs" },
-  { name: 'Calendar', href: '/calendar' },
-];
+  {name: 'Calendar', href: '/calendar'},
+]
 
 type Props = {
-  user: User | null;
-};
+  user: User | null
+}
 
-export default function Header({ user }: Props) {
+export default function Header({user}: Props) {
   return (
     <Disclosure as="nav" className="bg-gray-800">
-      {({ open }) => (
+      {({open}) => (
         <>
           <div className="mx-auto px-2 max-w-7xl sm:px-6 lg:px-8">
             <div className="relative flex items-center justify-between h-16">
@@ -42,11 +42,11 @@ export default function Header({ user }: Props) {
                 </div>
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
+                    {navigation.map(item => (
                       <NavLink
                         key={item.name}
                         to={item.href}
-                        className={({ isActive }) =>
+                        className={({isActive}) =>
                           clsx(
                             isActive
                               ? 'bg-gray-900 text-white'
@@ -104,7 +104,7 @@ export default function Header({ user }: Props) {
                       >
                         <Menu.Items className="absolute right-0 mt-2 py-1 w-48 bg-white rounded-md focus:outline-none shadow-lg origin-top-right ring-1 ring-black ring-opacity-5">
                           <Menu.Item>
-                            {({ active }) => (
+                            {({active}) => (
                               <a
                                 href="#"
                                 className={clsx(
@@ -117,7 +117,7 @@ export default function Header({ user }: Props) {
                             )}
                           </Menu.Item>
                           <Menu.Item>
-                            {({ active }) => (
+                            {({active}) => (
                               <a
                                 href="#"
                                 className={clsx(
@@ -130,7 +130,7 @@ export default function Header({ user }: Props) {
                             )}
                           </Menu.Item>
                           <Menu.Item>
-                            {({ active }) => (
+                            {({active}) => (
                               <Form action="/logout" method="post">
                                 <button
                                   type="submit"
@@ -155,11 +155,11 @@ export default function Header({ user }: Props) {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="pb-3 pt-2 px-2 space-y-1">
-              {navigation.map((item) => (
+              {navigation.map(item => (
                 <NavLink
                   key={item.name}
                   to={item.href}
-                  className={({ isActive }) =>
+                  className={({isActive}) =>
                     clsx(
                       isActive
                         ? 'bg-gray-900 text-white'
@@ -176,5 +176,5 @@ export default function Header({ user }: Props) {
         </>
       )}
     </Disclosure>
-  );
+  )
 }

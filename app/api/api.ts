@@ -10,176 +10,176 @@
  */
 
 export interface User {
-  email: string;
-  password: string;
-  roles: ('user' | 'admin')[];
-  teams: Team[];
-  id: number;
+  email: string
+  password: string
+  roles: ('user' | 'admin')[]
+  teams: Team[]
+  id: number
 
   /** @format date-time */
-  createdAt: string;
+  createdAt: string
 
   /** @format date-time */
-  updatedAt: string;
+  updatedAt: string
 }
 
 export interface Review {
-  title: string;
-  description: string;
-  rating: number;
-  jobId: number;
-  job: Job;
-  id: number;
+  title: string
+  description: string
+  rating: number
+  jobId: number
+  job: Job
+  id: number
 
   /** @format date-time */
-  createdAt: string;
+  createdAt: string
 
   /** @format date-time */
-  updatedAt: string;
+  updatedAt: string
 }
 
 export interface Job {
-  title: string;
-  description: string;
-  hourlyRate: number;
-  teamId: number;
-  team: Team;
-  reviews: Review[];
-  id: number;
+  title: string
+  description: string
+  hourlyRate: number
+  teamId: number
+  team: Team
+  reviews: Review[]
+  id: number
 
   /** @format date-time */
-  createdAt: string;
+  createdAt: string
 
   /** @format date-time */
-  updatedAt: string;
+  updatedAt: string
 }
 
 export interface Team {
-  name: string;
-  slug: string;
-  ownerId: number;
-  owner: User;
-  members: User[];
-  jobs: Job[];
-  id: number;
+  name: string
+  slug: string
+  ownerId: number
+  owner: User
+  members: User[]
+  jobs: Job[]
+  id: number
 
   /** @format date-time */
-  createdAt: string;
+  createdAt: string
 
   /** @format date-time */
-  updatedAt: string;
+  updatedAt: string
 }
 
 export interface CreateUserDto {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export interface LoginDto {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export interface AccessTokenDto {
-  accessToken: string;
+  accessToken: string
 }
 
 export interface CreateTeamDto {
-  name: string;
-  slug: string;
+  name: string
+  slug: string
 }
 
 export interface Exception {
-  statusCode: number;
-  message: string;
+  statusCode: number
+  message: string
 }
 
 export interface UpdateTeamDto {
-  name?: string;
-  slug?: string;
+  name?: string
+  slug?: string
 }
 
 export interface CreateJobDto {
-  title: string;
-  description: string;
+  title: string
+  description: string
 
   /** @min 0 */
-  hourlyRate: number;
+  hourlyRate: number
 }
 
 export interface UpdateJobDto {
-  title?: string;
-  description?: string;
+  title?: string
+  description?: string
 
   /** @min 0 */
-  hourlyRate?: number;
+  hourlyRate?: number
 }
 
 export interface CreateReviewDto {
-  title: string;
-  description: string;
+  title: string
+  description: string
 
   /**
    * @min 1
    * @max 5
    */
-  rating: number;
+  rating: number
 }
 
 export interface UpdateReviewDto {
-  title?: string;
-  description?: string;
+  title?: string
+  description?: string
 
   /**
    * @min 1
    * @max 5
    */
-  rating?: number;
+  rating?: number
 }
 
-export type QueryParamsType = Record<string | number, any>;
-export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>;
+export type QueryParamsType = Record<string | number, any>
+export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>
 
 export interface FullRequestParams extends Omit<RequestInit, 'body'> {
   /** set parameter to `true` for call `securityWorker` for this request */
-  secure?: boolean;
+  secure?: boolean
   /** request path */
-  path: string;
+  path: string
   /** content type of request body */
-  type?: ContentType;
+  type?: ContentType
   /** query params */
-  query?: QueryParamsType;
+  query?: QueryParamsType
   /** format of response (i.e. response.json() -> format: "json") */
-  format?: ResponseFormat;
+  format?: ResponseFormat
   /** request body */
-  body?: unknown;
+  body?: unknown
   /** base url */
-  baseUrl?: string;
+  baseUrl?: string
   /** request cancellation token */
-  cancelToken?: CancelToken;
+  cancelToken?: CancelToken
 }
 
 export type RequestParams = Omit<
   FullRequestParams,
   'body' | 'method' | 'query' | 'path'
->;
+>
 
 export interface ApiConfig<SecurityDataType = unknown> {
-  baseUrl?: string;
-  baseApiParams?: Omit<RequestParams, 'baseUrl' | 'cancelToken' | 'signal'>;
+  baseUrl?: string
+  baseApiParams?: Omit<RequestParams, 'baseUrl' | 'cancelToken' | 'signal'>
   securityWorker?: (
     securityData: SecurityDataType | null,
-  ) => Promise<RequestParams | void> | RequestParams | void;
-  customFetch?: typeof fetch;
+  ) => Promise<RequestParams | void> | RequestParams | void
+  customFetch?: typeof fetch
 }
 
 export interface HttpResponse<D extends unknown, E extends unknown = unknown>
   extends Response {
-  data: D;
-  error: E;
+  data: D
+  error: E
 }
 
-type CancelToken = Symbol | string | number;
+type CancelToken = Symbol | string | number
 
 export enum ContentType {
   Json = 'application/json',
@@ -188,61 +188,61 @@ export enum ContentType {
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = 'http://localhost:5000';
-  private securityData: SecurityDataType | null = null;
-  private securityWorker?: ApiConfig<SecurityDataType>['securityWorker'];
-  private abortControllers = new Map<CancelToken, AbortController>();
+  public baseUrl: string = 'http://localhost:5000'
+  private securityData: SecurityDataType | null = null
+  private securityWorker?: ApiConfig<SecurityDataType>['securityWorker']
+  private abortControllers = new Map<CancelToken, AbortController>()
   private customFetch = (...fetchParams: Parameters<typeof fetch>) =>
-    fetch(...fetchParams);
+    fetch(...fetchParams)
 
   private baseApiParams: RequestParams = {
     credentials: 'same-origin',
     headers: {},
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
-  };
+  }
 
   constructor(apiConfig: ApiConfig<SecurityDataType> = {}) {
-    Object.assign(this, apiConfig);
+    Object.assign(this, apiConfig)
   }
 
   public setSecurityData = (data: SecurityDataType | null) => {
-    this.securityData = data;
-  };
+    this.securityData = data
+  }
 
   private encodeQueryParam(key: string, value: any) {
-    const encodedKey = encodeURIComponent(key);
+    const encodedKey = encodeURIComponent(key)
     return `${encodedKey}=${encodeURIComponent(
       typeof value === 'number' ? value : `${value}`,
-    )}`;
+    )}`
   }
 
   private addQueryParam(query: QueryParamsType, key: string) {
-    return this.encodeQueryParam(key, query[key]);
+    return this.encodeQueryParam(key, query[key])
   }
 
   private addArrayQueryParam(query: QueryParamsType, key: string) {
-    const value = query[key];
-    return value.map((v: any) => this.encodeQueryParam(key, v)).join('&');
+    const value = query[key]
+    return value.map((v: any) => this.encodeQueryParam(key, v)).join('&')
   }
 
   protected toQueryString(rawQuery?: QueryParamsType): string {
-    const query = rawQuery || {};
+    const query = rawQuery || {}
     const keys = Object.keys(query).filter(
-      (key) => 'undefined' !== typeof query[key],
-    );
+      key => 'undefined' !== typeof query[key],
+    )
     return keys
-      .map((key) =>
+      .map(key =>
         Array.isArray(query[key])
           ? this.addArrayQueryParam(query, key)
           : this.addQueryParam(query, key),
       )
-      .join('&');
+      .join('&')
   }
 
   protected addQueryParams(rawQuery?: QueryParamsType): string {
-    const queryString = this.toQueryString(rawQuery);
-    return queryString ? `?${queryString}` : '';
+    const queryString = this.toQueryString(rawQuery)
+    return queryString ? `?${queryString}` : ''
   }
 
   private contentFormatters: Record<ContentType, (input: any) => any> = {
@@ -252,7 +252,7 @@ export class HttpClient<SecurityDataType = unknown> {
         : input,
     [ContentType.FormData]: (input: any) =>
       Object.keys(input || {}).reduce((formData, key) => {
-        const property = input[key];
+        const property = input[key]
         formData.append(
           key,
           property instanceof Blob
@@ -260,11 +260,11 @@ export class HttpClient<SecurityDataType = unknown> {
             : typeof property === 'object' && property !== null
             ? JSON.stringify(property)
             : `${property}`,
-        );
-        return formData;
+        )
+        return formData
       }, new FormData()),
     [ContentType.UrlEncoded]: (input: any) => this.toQueryString(input),
-  };
+  }
 
   private mergeRequestParams(
     params1: RequestParams,
@@ -279,33 +279,33 @@ export class HttpClient<SecurityDataType = unknown> {
         ...(params1.headers || {}),
         ...((params2 && params2.headers) || {}),
       },
-    };
+    }
   }
 
   private createAbortSignal = (
     cancelToken: CancelToken,
   ): AbortSignal | undefined => {
     if (this.abortControllers.has(cancelToken)) {
-      const abortController = this.abortControllers.get(cancelToken);
+      const abortController = this.abortControllers.get(cancelToken)
       if (abortController) {
-        return abortController.signal;
+        return abortController.signal
       }
-      return void 0;
+      return void 0
     }
 
-    const abortController = new AbortController();
-    this.abortControllers.set(cancelToken, abortController);
-    return abortController.signal;
-  };
+    const abortController = new AbortController()
+    this.abortControllers.set(cancelToken, abortController)
+    return abortController.signal
+  }
 
   public abortRequest = (cancelToken: CancelToken) => {
-    const abortController = this.abortControllers.get(cancelToken);
+    const abortController = this.abortControllers.get(cancelToken)
 
     if (abortController) {
-      abortController.abort();
-      this.abortControllers.delete(cancelToken);
+      abortController.abort()
+      this.abortControllers.delete(cancelToken)
     }
-  };
+  }
 
   public request = async <T = any, E = any>({
     body,
@@ -322,11 +322,11 @@ export class HttpClient<SecurityDataType = unknown> {
       ((typeof secure === 'boolean' ? secure : this.baseApiParams.secure) &&
         this.securityWorker &&
         (await this.securityWorker(this.securityData))) ||
-      {};
-    const requestParams = this.mergeRequestParams(params, secureParams);
-    const queryString = query && this.toQueryString(query);
-    const payloadFormatter = this.contentFormatters[type || ContentType.Json];
-    const responseFormat = format || requestParams.format;
+      {}
+    const requestParams = this.mergeRequestParams(params, secureParams)
+    const queryString = query && this.toQueryString(query)
+    const payloadFormatter = this.contentFormatters[type || ContentType.Json]
+    const responseFormat = format || requestParams.format
 
     return this.customFetch(
       `${baseUrl || this.baseUrl || ''}${path}${
@@ -336,7 +336,7 @@ export class HttpClient<SecurityDataType = unknown> {
         ...requestParams,
         headers: {
           ...(type && type !== ContentType.FormData
-            ? { 'Content-Type': type }
+            ? {'Content-Type': type}
             : {}),
           ...(requestParams.headers || {}),
         },
@@ -346,35 +346,35 @@ export class HttpClient<SecurityDataType = unknown> {
             ? null
             : payloadFormatter(body),
       },
-    ).then(async (response) => {
-      const r = response as HttpResponse<T, E>;
-      r.data = null as unknown as T;
-      r.error = null as unknown as E;
+    ).then(async response => {
+      const r = response as HttpResponse<T, E>
+      r.data = null as unknown as T
+      r.error = null as unknown as E
 
       const data = !responseFormat
         ? r
         : await response[responseFormat]()
-            .then((data) => {
+            .then(data => {
               if (r.ok) {
-                r.data = data;
+                r.data = data
               } else {
-                r.error = data;
+                r.error = data
               }
-              return r;
+              return r
             })
-            .catch((e) => {
-              r.error = e;
-              return r;
-            });
+            .catch(e => {
+              r.error = e
+              return r
+            })
 
       if (cancelToken) {
-        this.abortControllers.delete(cancelToken);
+        this.abortControllers.delete(cancelToken)
       }
 
-      if (!response.ok) throw data;
-      return data;
-    });
-  };
+      if (!response.ok) throw data
+      return data
+    })
+  }
 }
 
 /**
@@ -400,7 +400,7 @@ export class Api<
       method: 'GET',
       format: 'json',
       ...params,
-    });
+    })
 
   users = {
     /**
@@ -449,7 +449,7 @@ export class Api<
         format: 'json',
         ...params,
       }),
-  };
+  }
   auth = {
     /**
      * No description
@@ -461,7 +461,7 @@ export class Api<
     login: (data: LoginDto, params: RequestParams = {}) =>
       this.request<
         AccessTokenDto,
-        { statusCode: number; message: string; error?: string }
+        {statusCode: number; message: string; error?: string}
       >({
         path: `/auth/login`,
         method: 'POST',
@@ -480,17 +480,16 @@ export class Api<
      * @secure
      */
     me: (params: RequestParams = {}) =>
-      this.request<
-        User,
-        { statusCode: number; message: string; error?: string }
-      >({
-        path: `/auth/me`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-  };
+      this.request<User, {statusCode: number; message: string; error?: string}>(
+        {
+          path: `/auth/me`,
+          method: 'GET',
+          secure: true,
+          format: 'json',
+          ...params,
+        },
+      ),
+  }
   teams = {
     /**
      * No description
@@ -782,7 +781,7 @@ export class Api<
     ) =>
       this.request<
         Review,
-        { statusCode: number; message: string; error?: string }
+        {statusCode: number; message: string; error?: string}
       >({
         path: `/teams/${teamId}/jobs/${jobId}/reviews/${id}`,
         method: 'DELETE',
@@ -790,5 +789,5 @@ export class Api<
         format: 'json',
         ...params,
       }),
-  };
+  }
 }

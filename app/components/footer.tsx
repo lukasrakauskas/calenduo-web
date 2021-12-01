@@ -1,4 +1,4 @@
-import Logo from './logo';
+import Logo from './logo'
 
 export default function Footer() {
   return (
@@ -10,5 +10,5 @@ export default function Footer() {
         </p>
       </div>
     </footer>
-  );
+  )
 }

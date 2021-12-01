@@ -1,15 +1,15 @@
-import useCalendar from '@veccu/react-calendar';
-import { format } from 'date-fns';
-import locale from 'date-fns/locale/en-US';
-import { ChevronRightIcon, ChevronLeftIcon } from '@heroicons/react/solid';
-import clsx from 'clsx';
+import useCalendar from '@veccu/react-calendar'
+import {format} from 'date-fns'
+import locale from 'date-fns/locale/en-US'
+import {ChevronRightIcon, ChevronLeftIcon} from '@heroicons/react/solid'
+import clsx from 'clsx'
 
 const Calendar = () => {
-  const { cursorDate, headers, body, navigation, view } = useCalendar({
+  const {cursorDate, headers, body, navigation, view} = useCalendar({
     defaultWeekStart: 1,
-  });
+  })
 
-  const yyyyMM = format(cursorDate, 'yyyy-MM');
+  const yyyyMM = format(cursorDate, 'yyyy-MM')
 
   return (
     <div className="flex flex-col p-8 w-full h-full bg-white rounded">
@@ -68,33 +68,28 @@ const Calendar = () => {
         </caption>
         <thead>
           <tr>
-            {headers.weekDays.map(({ key, value }) => {
+            {headers.weekDays.map(({key, value}) => {
               return (
                 <th
                   className="w-1/7 h-12 text-gray-600 font-normal"
                   key={key}
                   data-testid="calendar-weekends"
                 >
-                  {format(value, 'cccc', { locale })}
+                  {format(value, 'cccc', {locale})}
                 </th>
-              );
+              )
             })}
           </tr>
         </thead>
         <tbody>
-          {body.value.map((week) => {
-            const { key, value: days } = week;
+          {body.value.map(week => {
+            const {key, value: days} = week
 
             return (
               <tr key={key} data-testid="calendar-weeks">
-                {days.map((day) => {
-                  const {
-                    key,
-                    date,
-                    isCurrentDate,
-                    isCurrentMonth,
-                    isWeekend,
-                  } = day;
+                {days.map(day => {
+                  const {key, date, isCurrentDate, isCurrentMonth, isWeekend} =
+                    day
 
                   return (
                     <td
@@ -131,15 +126,15 @@ const Calendar = () => {
                         </p>
                       )}
                     </td>
-                  );
+                  )
                 })}
               </tr>
-            );
+            )
           })}
         </tbody>
       </table>
     </div>
-  );
-};
+  )
+}
 
-export default Calendar;
+export default Calendar
