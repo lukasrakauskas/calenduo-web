@@ -9,7 +9,8 @@
     "dev": "concurrently -p \"[{name}]\" -n \"Remix,Tailwind\" -c \"black.bgGreen.bold,black.bgBlue.bold\" \"remix dev\" \"npm run dev:css\"",
     "dev:css": "tailwindcss --output ./app/styles/tailwind.css --watch",
     "postinstall": "remix setup node",
-    "generate-api": "swagger-typescript-api -p http://localhost:5000/swagger-json -o ./app/api -n api.ts"
+    "generate-api": "swagger-typescript-api -p http://localhost:5000/swagger-json -o ./app/api -n api.ts",
+    "format": "prettier ./app/**/*.{ts,tsx} --write"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.2",
@@ -32,6 +33,8 @@
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
     "concurrently": "^6.4.0",
+    "prettier": "^2.5.0",
+    "prettier-plugin-tailwind": "^2.2.12",
     "swagger-typescript-api": "^9.3.1",
     "typescript": "^4.1.2"
   },
