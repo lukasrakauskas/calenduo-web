@@ -1,7 +1,7 @@
-process.env.RUNNING_PRETTIER = 'true'
+process.env.RUNNING_PRETTIER = 'true';
 module.exports = {
   arrowParens: 'avoid',
-  bracketSpacing: false,
+  bracketSpacing: true,
   embeddedLanguageFormatting: 'auto',
   endOfLine: 'lf',
   htmlWhitespaceSensitivity: 'css',
@@ -16,4 +16,4 @@ module.exports = {
   tabWidth: 2,
   trailingComma: 'all',
   useTabs: false,
-}
+};
