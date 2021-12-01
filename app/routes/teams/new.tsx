@@ -69,7 +69,7 @@ export default function CreateTeam() {
         <Form method="post">
           <div className="shadow border sm:rounded-md sm:overflow-hidden">
             <div className=" px-4 py-5 bg-white space-y-6 sm:p-6">
-              <div className="">
+              <div>
                 <label
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-700"
@@ -88,7 +88,7 @@ export default function CreateTeam() {
                 ) : null}
               </div>
 
-              <div className="">
+              <div>
                 <label
                   htmlFor="slug"
                   className={clsx(
@@ -118,27 +118,6 @@ export default function CreateTeam() {
                     http://calenduo.com/teams/{slug.toLowerCase()}
                   </p>
                 ) : null}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="about"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  About
-                </label>
-                <div className="mt-1">
-                  <textarea
-                    id="about"
-                    name="about"
-                    rows={3}
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
-                    placeholder="you@example.com"
-                  />
-                </div>
-                <p className="mt-2 text-sm text-gray-500">
-                  Brief description for your profile. URLs are hyperlinked.
-                </p>
               </div>
             </div>
             <div className="px-4 py-3 bg-gray-50 sm:px-6 flex justify-end gap-x-2">
