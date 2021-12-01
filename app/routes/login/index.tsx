@@ -19,7 +19,7 @@ export let headers: HeadersFunction = () => {
 
 function validateEmail(email: unknown) {
   if (typeof email !== "string" || email.length < 3) {
-    return `Usernames must be at least 3 characters long`;
+    return `Email must be at least 3 characters long`;
   }
 }
 
@@ -35,8 +35,7 @@ type LoginForm = {
 };
 
 type ActionData = {
-  formError?: string;
-  fieldErrors?: Partial<LoginForm>;
+  error?: string;
   fields?: LoginForm;
 };
 
@@ -45,22 +44,27 @@ export let action: ActionFunction = async ({
 }): Promise<Response | ActionData> => {
   let { email, password } = Object.fromEntries(await request.formData());
   if (typeof email !== "string" || typeof password !== "string") {
-    return { formError: `Form not submitted correctly.` };
+    return { error: `Form not submitted correctly.` };
   }
 
   let fields = { email, password };
-  let fieldErrors = {
-    email: validateEmail(email),
-    password: validatePassword(password),
-  };
-  if (Object.values(fieldErrors).some(Boolean)) return { fieldErrors, fields };
+
+  let emailError = validateEmail(email);
+  if (emailError) {
+    return { error: emailError, fields };
+  }
+
+  let passwordError = validatePassword(password);
+  if (passwordError) {
+    return { error: passwordError, fields };
+  }
 
   const accessToken = await login({ email, password });
 
   if (!accessToken) {
     return {
       fields,
-      formError: `Username/Password combination is incorrect`,
+      error: `Username/Password combination is incorrect`,
     };
   }
 
@@ -69,7 +73,7 @@ export let action: ActionFunction = async ({
 
 export default function Login() {
   const transition = useTransition();
-  const actionData = useActionData<{ error?: string }>();
+  const actionData = useActionData<ActionData>();
 
   return (
     <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -106,6 +110,7 @@ export default function Login() {
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
+                defaultValue={actionData?.fields?.email}
               />
             </div>
             <div>
