@@ -84,7 +84,7 @@ function TeamTableItem({ team, user }: { team: Team; user: User }) {
         <div className="flex justify-end space-x-4">
           {user.id === team.ownerId ? (
             <Link
-              to={`${team.id}`}
+              to={`${team.id}/edit`}
               className="text-indigo-600 hover:text-indigo-900"
             >
               Settings
