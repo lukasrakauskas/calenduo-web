@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Links,
   LiveReload,
@@ -8,15 +8,15 @@ import {
   ScrollRestoration,
   useCatch,
   useLocation,
-} from "remix";
-import type { LinksFunction } from "remix";
+} from 'remix';
+import type { LinksFunction } from 'remix';
 
-import styles from "~/styles/tailwind.css";
+import styles from '~/styles/tailwind.css';
 
 export let links: LinksFunction = () => {
   return [
-    { rel: "stylesheet", href: "https://rsms.me/inter/inter.css" },
-    { rel: "stylesheet", href: styles },
+    { rel: 'stylesheet', href: 'https://rsms.me/inter/inter.css' },
+    { rel: 'stylesheet', href: styles },
   ];
 };
 
@@ -49,7 +49,7 @@ function Document({
         <RouteChangeAnnouncement />
         <ScrollRestoration />
         <Scripts />
-        {process.env.NODE_ENV === "development" && <LiveReload />}
+        {process.env.NODE_ENV === 'development' && <LiveReload />}
       </body>
     </html>
   );
@@ -110,7 +110,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
  */
 const RouteChangeAnnouncement = React.memo(() => {
   let [hydrated, setHydrated] = React.useState(false);
-  let [innerHtml, setInnerHtml] = React.useState("");
+  let [innerHtml, setInnerHtml] = React.useState('');
   let location = useLocation();
 
   React.useEffect(() => {
@@ -126,7 +126,7 @@ const RouteChangeAnnouncement = React.memo(() => {
       return;
     }
 
-    let pageTitle = location.pathname === "/" ? "Home page" : document.title;
+    let pageTitle = location.pathname === '/' ? 'Home page' : document.title;
     setInnerHtml(`Navigated to ${pageTitle}`);
   }, [location.pathname]);
 
@@ -142,17 +142,17 @@ const RouteChangeAnnouncement = React.memo(() => {
       aria-atomic
       id="route-change-region"
       style={{
-        border: "0",
-        clipPath: "inset(100%)",
-        clip: "rect(0 0 0 0)",
-        height: "1px",
-        margin: "-1px",
-        overflow: "hidden",
-        padding: "0",
-        position: "absolute",
-        width: "1px",
-        whiteSpace: "nowrap",
-        wordWrap: "normal",
+        border: '0',
+        clipPath: 'inset(100%)',
+        clip: 'rect(0 0 0 0)',
+        height: '1px',
+        margin: '-1px',
+        overflow: 'hidden',
+        padding: '0',
+        position: 'absolute',
+        width: '1px',
+        whiteSpace: 'nowrap',
+        wordWrap: 'normal',
       }}
     >
       {innerHtml}

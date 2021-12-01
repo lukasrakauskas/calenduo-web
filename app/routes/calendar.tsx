@@ -1,18 +1,18 @@
-import useCalendar from "@veccu/react-calendar";
-import { format } from "date-fns";
-import locale from "date-fns/locale/en-US";
-import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/solid";
-import clsx from "clsx";
+import useCalendar from '@veccu/react-calendar';
+import { format } from 'date-fns';
+import locale from 'date-fns/locale/en-US';
+import { ChevronRightIcon, ChevronLeftIcon } from '@heroicons/react/solid';
+import clsx from 'clsx';
 
 const Calendar = () => {
   const { cursorDate, headers, body, navigation, view } = useCalendar({
     defaultWeekStart: 1,
   });
 
-  const yyyyMM = format(cursorDate, "yyyy-MM");
+  const yyyyMM = format(cursorDate, 'yyyy-MM');
 
   return (
-    <div className="w-full h-full bg-white rounded p-8 flex flex-col">
+    <div className="flex flex-col p-8 w-full h-full bg-white rounded">
       <table className="w-full">
         <caption>
           <nav>
@@ -41,7 +41,7 @@ const Calendar = () => {
                 </button>
               </div>
               <p className="text-2xl" data-testid="cursor-date">
-                {format(cursorDate, "MMMM yyyy")}
+                {format(cursorDate, 'MMMM yyyy')}
               </p>
               <div className="flex flex-row gap-8">
                 <button
@@ -75,7 +75,7 @@ const Calendar = () => {
                   key={key}
                   data-testid="calendar-weekends"
                 >
-                  {format(value, "cccc", { locale })}
+                  {format(value, 'cccc', { locale })}
                 </th>
               );
             })}
@@ -100,11 +100,11 @@ const Calendar = () => {
                     <td
                       key={key}
                       className={clsx(
-                        "border-2",
-                        !isCurrentMonth && "opacity-20"
+                        'border-2',
+                        !isCurrentMonth && 'opacity-20',
                       )}
                       data-testid={
-                        isCurrentDate ? "calendar-cell--today" : "calendar-cell"
+                        isCurrentDate ? 'calendar-cell--today' : 'calendar-cell'
                       }
                     >
                       {isCurrentDate ? (
@@ -112,18 +112,18 @@ const Calendar = () => {
                           <time
                             dateTime={`${yyyyMM}-${String(date).padStart(
                               2,
-                              "0"
+                              '0',
                             )}`}
                           >
                             {date}
                           </time>
                         </p>
                       ) : (
-                        <p className={clsx(isWeekend && "text-red-500")}>
+                        <p className={clsx(isWeekend && 'text-red-500')}>
                           <time
                             dateTime={`${yyyyMM}-${String(date).padStart(
                               2,
-                              "0"
+                              '0',
                             )}`}
                           >
                             {date}

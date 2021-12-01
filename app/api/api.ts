@@ -12,7 +12,7 @@
 export interface User {
   email: string;
   password: string;
-  roles: ("user" | "admin")[];
+  roles: ('user' | 'admin')[];
   teams: Team[];
   id: number;
 
@@ -138,9 +138,9 @@ export interface UpdateReviewDto {
 }
 
 export type QueryParamsType = Record<string | number, any>;
-export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
+export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>;
 
-export interface FullRequestParams extends Omit<RequestInit, "body"> {
+export interface FullRequestParams extends Omit<RequestInit, 'body'> {
   /** set parameter to `true` for call `securityWorker` for this request */
   secure?: boolean;
   /** request path */
@@ -159,16 +159,22 @@ export interface FullRequestParams extends Omit<RequestInit, "body"> {
   cancelToken?: CancelToken;
 }
 
-export type RequestParams = Omit<FullRequestParams, "body" | "method" | "query" | "path">;
+export type RequestParams = Omit<
+  FullRequestParams,
+  'body' | 'method' | 'query' | 'path'
+>;
 
 export interface ApiConfig<SecurityDataType = unknown> {
   baseUrl?: string;
-  baseApiParams?: Omit<RequestParams, "baseUrl" | "cancelToken" | "signal">;
-  securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams | void> | RequestParams | void;
+  baseApiParams?: Omit<RequestParams, 'baseUrl' | 'cancelToken' | 'signal'>;
+  securityWorker?: (
+    securityData: SecurityDataType | null,
+  ) => Promise<RequestParams | void> | RequestParams | void;
   customFetch?: typeof fetch;
 }
 
-export interface HttpResponse<D extends unknown, E extends unknown = unknown> extends Response {
+export interface HttpResponse<D extends unknown, E extends unknown = unknown>
+  extends Response {
   data: D;
   error: E;
 }
@@ -176,23 +182,24 @@ export interface HttpResponse<D extends unknown, E extends unknown = unknown> ex
 type CancelToken = Symbol | string | number;
 
 export enum ContentType {
-  Json = "application/json",
-  FormData = "multipart/form-data",
-  UrlEncoded = "application/x-www-form-urlencoded",
+  Json = 'application/json',
+  FormData = 'multipart/form-data',
+  UrlEncoded = 'application/x-www-form-urlencoded',
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = "http://localhost:5000";
+  public baseUrl: string = 'http://localhost:5000';
   private securityData: SecurityDataType | null = null;
-  private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
+  private securityWorker?: ApiConfig<SecurityDataType>['securityWorker'];
   private abortControllers = new Map<CancelToken, AbortController>();
-  private customFetch = (...fetchParams: Parameters<typeof fetch>) => fetch(...fetchParams);
+  private customFetch = (...fetchParams: Parameters<typeof fetch>) =>
+    fetch(...fetchParams);
 
   private baseApiParams: RequestParams = {
-    credentials: "same-origin",
+    credentials: 'same-origin',
     headers: {},
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
   };
 
   constructor(apiConfig: ApiConfig<SecurityDataType> = {}) {
@@ -205,7 +212,9 @@ export class HttpClient<SecurityDataType = unknown> {
 
   private encodeQueryParam(key: string, value: any) {
     const encodedKey = encodeURIComponent(key);
-    return `${encodedKey}=${encodeURIComponent(typeof value === "number" ? value : `${value}`)}`;
+    return `${encodedKey}=${encodeURIComponent(
+      typeof value === 'number' ? value : `${value}`,
+    )}`;
   }
 
   private addQueryParam(query: QueryParamsType, key: string) {
@@ -214,25 +223,33 @@ export class HttpClient<SecurityDataType = unknown> {
 
   private addArrayQueryParam(query: QueryParamsType, key: string) {
     const value = query[key];
-    return value.map((v: any) => this.encodeQueryParam(key, v)).join("&");
+    return value.map((v: any) => this.encodeQueryParam(key, v)).join('&');
   }
 
   protected toQueryString(rawQuery?: QueryParamsType): string {
     const query = rawQuery || {};
-    const keys = Object.keys(query).filter((key) => "undefined" !== typeof query[key]);
+    const keys = Object.keys(query).filter(
+      (key) => 'undefined' !== typeof query[key],
+    );
     return keys
-      .map((key) => (Array.isArray(query[key]) ? this.addArrayQueryParam(query, key) : this.addQueryParam(query, key)))
-      .join("&");
+      .map((key) =>
+        Array.isArray(query[key])
+          ? this.addArrayQueryParam(query, key)
+          : this.addQueryParam(query, key),
+      )
+      .join('&');
   }
 
   protected addQueryParams(rawQuery?: QueryParamsType): string {
     const queryString = this.toQueryString(rawQuery);
-    return queryString ? `?${queryString}` : "";
+    return queryString ? `?${queryString}` : '';
   }
 
   private contentFormatters: Record<ContentType, (input: any) => any> = {
     [ContentType.Json]: (input: any) =>
-      input !== null && (typeof input === "object" || typeof input === "string") ? JSON.stringify(input) : input,
+      input !== null && (typeof input === 'object' || typeof input === 'string')
+        ? JSON.stringify(input)
+        : input,
     [ContentType.FormData]: (input: any) =>
       Object.keys(input || {}).reduce((formData, key) => {
         const property = input[key];
@@ -240,7 +257,7 @@ export class HttpClient<SecurityDataType = unknown> {
           key,
           property instanceof Blob
             ? property
-            : typeof property === "object" && property !== null
+            : typeof property === 'object' && property !== null
             ? JSON.stringify(property)
             : `${property}`,
         );
@@ -249,7 +266,10 @@ export class HttpClient<SecurityDataType = unknown> {
     [ContentType.UrlEncoded]: (input: any) => this.toQueryString(input),
   };
 
-  private mergeRequestParams(params1: RequestParams, params2?: RequestParams): RequestParams {
+  private mergeRequestParams(
+    params1: RequestParams,
+    params2?: RequestParams,
+  ): RequestParams {
     return {
       ...this.baseApiParams,
       ...params1,
@@ -262,7 +282,9 @@ export class HttpClient<SecurityDataType = unknown> {
     };
   }
 
-  private createAbortSignal = (cancelToken: CancelToken): AbortSignal | undefined => {
+  private createAbortSignal = (
+    cancelToken: CancelToken,
+  ): AbortSignal | undefined => {
     if (this.abortControllers.has(cancelToken)) {
       const abortController = this.abortControllers.get(cancelToken);
       if (abortController) {
@@ -297,7 +319,7 @@ export class HttpClient<SecurityDataType = unknown> {
     ...params
   }: FullRequestParams): Promise<HttpResponse<T, E>> => {
     const secureParams =
-      ((typeof secure === "boolean" ? secure : this.baseApiParams.secure) &&
+      ((typeof secure === 'boolean' ? secure : this.baseApiParams.secure) &&
         this.securityWorker &&
         (await this.securityWorker(this.securityData))) ||
       {};
@@ -306,15 +328,25 @@ export class HttpClient<SecurityDataType = unknown> {
     const payloadFormatter = this.contentFormatters[type || ContentType.Json];
     const responseFormat = format || requestParams.format;
 
-    return this.customFetch(`${baseUrl || this.baseUrl || ""}${path}${queryString ? `?${queryString}` : ""}`, {
-      ...requestParams,
-      headers: {
-        ...(type && type !== ContentType.FormData ? { "Content-Type": type } : {}),
-        ...(requestParams.headers || {}),
+    return this.customFetch(
+      `${baseUrl || this.baseUrl || ''}${path}${
+        queryString ? `?${queryString}` : ''
+      }`,
+      {
+        ...requestParams,
+        headers: {
+          ...(type && type !== ContentType.FormData
+            ? { 'Content-Type': type }
+            : {}),
+          ...(requestParams.headers || {}),
+        },
+        signal: cancelToken ? this.createAbortSignal(cancelToken) : void 0,
+        body:
+          typeof body === 'undefined' || body === null
+            ? null
+            : payloadFormatter(body),
       },
-      signal: cancelToken ? this.createAbortSignal(cancelToken) : void 0,
-      body: typeof body === "undefined" || body === null ? null : payloadFormatter(body),
-    }).then(async (response) => {
+    ).then(async (response) => {
       const r = response as HttpResponse<T, E>;
       r.data = null as unknown as T;
       r.error = null as unknown as E;
@@ -353,7 +385,9 @@ export class HttpClient<SecurityDataType = unknown> {
  *
  * Calenduo API
  */
-export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+export class Api<
+  SecurityDataType extends unknown,
+> extends HttpClient<SecurityDataType> {
   /**
    * No description
    *
@@ -363,8 +397,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   getHello = (params: RequestParams = {}) =>
     this.request<string, any>({
       path: `/`,
-      method: "GET",
-      format: "json",
+      method: 'GET',
+      format: 'json',
       ...params,
     });
 
@@ -379,8 +413,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     getUsers: (params: RequestParams = {}) =>
       this.request<User[], any>({
         path: `/users`,
-        method: "GET",
-        format: "json",
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
 
@@ -394,10 +428,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     createUser: (data: CreateUserDto, params: RequestParams = {}) =>
       this.request<User, any>({
         path: `/users`,
-        method: "POST",
+        method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -411,8 +445,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     findUserById: (id: number, params: RequestParams = {}) =>
       this.request<User, any>({
         path: `/users/${id}`,
-        method: "GET",
-        format: "json",
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
   };
@@ -425,12 +459,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/auth/login
      */
     login: (data: LoginDto, params: RequestParams = {}) =>
-      this.request<AccessTokenDto, { statusCode: number; message: string; error?: string }>({
+      this.request<
+        AccessTokenDto,
+        { statusCode: number; message: string; error?: string }
+      >({
         path: `/auth/login`,
-        method: "POST",
+        method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -443,11 +480,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     me: (params: RequestParams = {}) =>
-      this.request<User, { statusCode: number; message: string; error?: string }>({
+      this.request<
+        User,
+        { statusCode: number; message: string; error?: string }
+      >({
         path: `/auth/me`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
   };
@@ -463,11 +503,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     createTeam: (data: CreateTeamDto, params: RequestParams = {}) =>
       this.request<Team, Exception>({
         path: `/teams`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -482,9 +522,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     findAllTeams: (params: RequestParams = {}) =>
       this.request<Team[], any>({
         path: `/teams`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -499,9 +539,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     findTeamById: (id: number, params: RequestParams = {}) =>
       this.request<Team, any>({
         path: `/teams/${id}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -516,11 +556,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     updateTeam: (id: number, data: UpdateTeamDto, params: RequestParams = {}) =>
       this.request<Team, any>({
         path: `/teams/${id}`,
-        method: "PATCH",
+        method: 'PATCH',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -535,9 +575,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     deleteTeam: (id: number, params: RequestParams = {}) =>
       this.request<Team, any>({
         path: `/teams/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -552,11 +592,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     create: (teamId: number, data: CreateJobDto, params: RequestParams = {}) =>
       this.request<Job, any>({
         path: `/teams/${teamId}/jobs`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -571,9 +611,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     findAll: (teamId: number, params: RequestParams = {}) =>
       this.request<Job[], any>({
         path: `/teams/${teamId}/jobs`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -588,9 +628,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     findOne: (id: number, teamId: number, params: RequestParams = {}) =>
       this.request<Job, any>({
         path: `/teams/${teamId}/jobs/${id}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -602,10 +642,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/teams/{teamId}/jobs/{id}
      * @secure
      */
-    update: (id: number, teamId: number, data: UpdateJobDto, params: RequestParams = {}) =>
+    update: (
+      id: number,
+      teamId: number,
+      data: UpdateJobDto,
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
         path: `/teams/${teamId}/jobs/${id}`,
-        method: "PATCH",
+        method: 'PATCH',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -623,9 +668,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     remove: (id: number, teamId: number, params: RequestParams = {}) =>
       this.request<Job, any>({
         path: `/teams/${teamId}/jobs/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -637,14 +682,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/teams/{teamId}/jobs/{jobId}/reviews
      * @secure
      */
-    createReview: (teamId: number, jobId: number, data: CreateReviewDto, params: RequestParams = {}) =>
+    createReview: (
+      teamId: number,
+      jobId: number,
+      data: CreateReviewDto,
+      params: RequestParams = {},
+    ) =>
       this.request<Review, any>({
         path: `/teams/${teamId}/jobs/${jobId}/reviews`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -656,12 +706,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/teams/{teamId}/jobs/{jobId}/reviews
      * @secure
      */
-    findAllReviews: (teamId: number, jobId: number, params: RequestParams = {}) =>
+    findAllReviews: (
+      teamId: number,
+      jobId: number,
+      params: RequestParams = {},
+    ) =>
       this.request<Review[], any>({
         path: `/teams/${teamId}/jobs/${jobId}/reviews`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -673,12 +727,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/teams/{teamId}/jobs/{jobId}/reviews/{id}
      * @secure
      */
-    findReviewById: (id: number, teamId: number, jobId: number, params: RequestParams = {}) =>
+    findReviewById: (
+      id: number,
+      teamId: number,
+      jobId: number,
+      params: RequestParams = {},
+    ) =>
       this.request<Review, any>({
         path: `/teams/${teamId}/jobs/${jobId}/reviews/${id}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -690,14 +749,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/teams/{teamId}/jobs/{jobId}/reviews/{id}
      * @secure
      */
-    updateReview: (id: number, teamId: number, jobId: number, data: UpdateReviewDto, params: RequestParams = {}) =>
+    updateReview: (
+      id: number,
+      teamId: number,
+      jobId: number,
+      data: UpdateReviewDto,
+      params: RequestParams = {},
+    ) =>
       this.request<Review, any>({
         path: `/teams/${teamId}/jobs/${jobId}/reviews/${id}`,
-        method: "PATCH",
+        method: 'PATCH',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -709,12 +774,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/teams/{teamId}/jobs/{jobId}/reviews/{id}
      * @secure
      */
-    deleteReview: (id: number, teamId: number, jobId: number, params: RequestParams = {}) =>
-      this.request<Review, { statusCode: number; message: string; error?: string }>({
+    deleteReview: (
+      id: number,
+      teamId: number,
+      jobId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        Review,
+        { statusCode: number; message: string; error?: string }
+      >({
         path: `/teams/${teamId}/jobs/${jobId}/reviews/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
   };

@@ -1,18 +1,18 @@
-import { NavLink, Outlet, useLoaderData } from "remix";
-import type { LoaderFunction } from "remix";
-import { User } from "~/api";
-import { requireUser } from "~/utils/session.server";
-import Footer from "~/components/footer";
-import Header from "~/components/header";
-import clsx from "clsx";
+import { NavLink, Outlet, useLoaderData } from 'remix';
+import type { LoaderFunction } from 'remix';
+import { User } from '~/api';
+import { requireUser } from '~/utils/session.server';
+import Footer from '~/components/footer';
+import Header from '~/components/header';
+import clsx from 'clsx';
 
 type LoaderData = {
   user: User;
 };
 
 const navigations: Array<{ label: string; path: string }> = [
-  { label: "Create a team", path: "new" },
-  { label: "Invites", path: "invites" },
+  { label: 'Create a team', path: 'new' },
+  { label: 'Invites', path: 'invites' },
 ];
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -31,12 +31,12 @@ export default function Teams() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header user={user} />
-      <div className="flex flex-1 max-w-7xl sm:w-full mx-auto px-2 sm:px-6 lg:px-8 my-4">
+      <div className="flex flex-1 mx-auto my-4 px-2 max-w-7xl sm:px-6 sm:w-full lg:px-8">
         <div className="w-full">
-          <div className="py-3 grid grid-cols-4 gap-x-4">
+          <div className="grid gap-x-4 grid-cols-4 py-3">
             <Outlet />
             <aside className="grid-col-1 self-start">
-              <div className="shadow w-full rounded-md bg-white focus:outline-none">
+              <div className="w-full bg-white rounded-md focus:outline-none shadow">
                 {navigations.map(({ label, path }) => (
                   <NavItem key={path} path={path} label={label} />
                 ))}
@@ -56,8 +56,8 @@ function NavItem({ path, label }: { path: string; label: string }) {
         to={path}
         className={({ isActive }) =>
           clsx(
-            isActive ? "bg-gray-100 text-gray-900" : "text-gray-700",
-            "hover:bg-gray-200 hover:text-gray-900 block px-4 py-2 text-sm text-gray-700"
+            isActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+            'block px-4 py-2 text-gray-700 hover:text-gray-900 text-sm hover:bg-gray-200',
           )
         }
       >
