@@ -1,4 +1,4 @@
-process.env.RUNNING_PRETTIER = 'true';
+process.env.RUNNING_PRETTIER = 'true'
 module.exports = {
   arrowParens: 'avoid',
   bracketSpacing: false,
@@ -6,7 +6,6 @@ module.exports = {
   endOfLine: 'lf',
   htmlWhitespaceSensitivity: 'css',
   insertPragma: false,
-  jsxBracketSameLine: false,
   jsxSingleQuote: false,
   printWidth: 80,
   proseWrap: 'always',
@@ -17,4 +16,4 @@ module.exports = {
   tabWidth: 2,
   trailingComma: 'all',
   useTabs: false,
-};
+}
