@@ -1,9 +1,9 @@
-import type {MetaFunction, LoaderFunction} from 'remix'
-import {useLoaderData} from 'remix'
-import {User} from '~/api'
+import type { MetaFunction, LoaderFunction } from 'remix'
+import { useLoaderData } from 'remix'
+import { User } from '~/api'
 import Footer from '~/components/footer'
 import Header from '~/components/header'
-import {getUser} from '~/utils/session.server'
+import { getUser } from '~/utils/session.server'
 
 export const meta: MetaFunction = () => {
   return {
@@ -15,7 +15,7 @@ type IndexData = {
   user: User | null
 }
 
-export let loader: LoaderFunction = async ({request}) => {
+export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request)
 
   const data: IndexData = {
@@ -26,7 +26,7 @@ export let loader: LoaderFunction = async ({request}) => {
 }
 
 export default function Dashboard() {
-  const {user} = useLoaderData<IndexData>()
+  const { user } = useLoaderData<IndexData>()
 
   return (
     <div className="flex flex-col min-h-screen">

@@ -1,7 +1,7 @@
-import {Fragment, PropsWithChildren, ReactNode, useRef} from 'react'
-import {Dialog, Transition} from '@headlessui/react'
-import {ExclamationIcon} from '@heroicons/react/outline'
-import {useTransition} from 'remix'
+import { Fragment, PropsWithChildren, ReactNode, useRef } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
+import { ExclamationIcon } from '@heroicons/react/outline'
+import { useTransition } from 'remix'
 
 interface Props {
   open: boolean

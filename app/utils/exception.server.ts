@@ -1,4 +1,4 @@
-import {Exception} from '~/api'
+import { Exception } from '~/api'
 
 export const getException = (error: any): Exception => {
   if (

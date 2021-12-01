@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 import {
   Links,
   LiveReload,
@@ -8,32 +8,32 @@ import {
   ScrollRestoration,
   useCatch,
   useLocation,
-} from 'remix';
-import type { LinksFunction } from 'remix';
+} from 'remix'
+import type { LinksFunction } from 'remix'
 
-import styles from '~/styles/tailwind.css';
+import styles from '~/styles/tailwind.css'
 
-export let links: LinksFunction = () => {
+export const links: LinksFunction = () => {
   return [
     { rel: 'stylesheet', href: 'https://rsms.me/inter/inter.css' },
     { rel: 'stylesheet', href: styles },
-  ];
-};
+  ]
+}
 
 export default function App() {
   return (
     <Document>
       <Outlet />
     </Document>
-  );
+  )
 }
 
 function Document({
   children,
   title,
 }: {
-  children: React.ReactNode;
-  title?: string;
+  children: React.ReactNode
+  title?: string
 }) {
   return (
     <html lang="en">
@@ -52,13 +52,13 @@ function Document({
         {process.env.NODE_ENV === 'development' && <LiveReload />}
       </body>
     </html>
-  );
+  )
 }
 
 export function CatchBoundary() {
-  let caught = useCatch();
+  const caught = useCatch()
 
-  let message;
+  let message
   switch (caught.status) {
     case 401:
       message = (
@@ -66,16 +66,16 @@ export function CatchBoundary() {
           Oops! Looks like you tried to visit a page that you do not have access
           to.
         </p>
-      );
-      break;
+      )
+      break
     case 404:
       message = (
         <p>Oops! Looks like you tried to visit a page that does not exist.</p>
-      );
-      break;
+      )
+      break
 
     default:
-      throw new Error(caught.data || caught.statusText);
+      throw new Error(caught.data || caught.statusText)
   }
 
   return (
@@ -85,11 +85,11 @@ export function CatchBoundary() {
       </h1>
       {message}
     </Document>
-  );
+  )
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
-  console.error(error);
+  console.error(error)
   return (
     <Document title="Error!">
       <div>
@@ -102,38 +102,38 @@ export function ErrorBoundary({ error }: { error: Error }) {
         </p>
       </div>
     </Document>
-  );
+  )
 }
 
 /**
  * Provides an alert for screen reader users when the route changes.
  */
 const RouteChangeAnnouncement = React.memo(() => {
-  let [hydrated, setHydrated] = React.useState(false);
-  let [innerHtml, setInnerHtml] = React.useState('');
-  let location = useLocation();
+  const [hydrated, setHydrated] = React.useState(false)
+  const [innerHtml, setInnerHtml] = React.useState('')
+  const location = useLocation()
 
   React.useEffect(() => {
-    setHydrated(true);
-  }, []);
+    setHydrated(true)
+  }, [])
 
-  let firstRenderRef = React.useRef(true);
+  const firstRenderRef = React.useRef(true)
   React.useEffect(() => {
     // Skip the first render because we don't want an announcement on the
     // initial page load.
     if (firstRenderRef.current) {
-      firstRenderRef.current = false;
-      return;
+      firstRenderRef.current = false
+      return
     }
 
-    let pageTitle = location.pathname === '/' ? 'Home page' : document.title;
-    setInnerHtml(`Navigated to ${pageTitle}`);
-  }, [location.pathname]);
+    const pageTitle = location.pathname === '/' ? 'Home page' : document.title
+    setInnerHtml(`Navigated to ${pageTitle}`)
+  }, [location.pathname])
 
   // Render nothing on the server. The live region provides no value unless
   // scripts are loaded and the browser takes over normal routing.
   if (!hydrated) {
-    return null;
+    return null
   }
 
   return (
@@ -157,5 +157,5 @@ const RouteChangeAnnouncement = React.memo(() => {
     >
       {innerHtml}
     </div>
-  );
-});
+  )
+})

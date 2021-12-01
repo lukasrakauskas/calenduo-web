@@ -1,57 +1,57 @@
-import { json, Link, useLoaderData } from "remix";
-import type { LoaderFunction, MetaFunction } from "remix";
-import { api, User } from "~/api";
-import type { Team } from "~/api";
-import { requireAccessToken, requireUser } from "~/utils/session.server";
+import { json, Link, useLoaderData } from 'remix'
+import type { LoaderFunction, MetaFunction } from 'remix'
+import { api, User } from '~/api'
+import type { Team } from '~/api'
+import { requireAccessToken, requireUser } from '~/utils/session.server'
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Teams | Calenduo",
-    description: "View your teams in Calenduo",
-  };
-};
+    title: 'Teams | Calenduo',
+    description: 'View your teams in Calenduo',
+  }
+}
 
 type TeamsData = {
-  user: User;
-  teams: Team[];
-};
+  user: User
+  teams: Team[]
+}
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const accessToken = await requireAccessToken(request);
-  const user = await requireUser(request);
+  const accessToken = await requireAccessToken(request)
+  const user = await requireUser(request)
 
   try {
     const { data: teams } = await api.teams.findAllTeams({
       headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    })
 
-    return json({ teams, user });
+    return json({ teams, user })
   } catch (error) {
-    return { teams: [], user };
+    return { teams: [], user }
   }
-};
+}
 
 export default function Teams() {
-  const { teams, user } = useLoaderData<TeamsData>();
+  const { teams, user } = useLoaderData<TeamsData>()
 
   return (
     <>
-      <div className="max-w-7xl pb-6 col-span-3">
-        <h1 className="text-3xl font-bold text-gray-900">Teams</h1>
+      <div className="col-span-3 pb-6 max-w-7xl">
+        <h1 className="text-gray-900 text-3xl font-bold">Teams</h1>
       </div>
       <main className="col-span-3">
-        <div className="shadow overflow-hidden sm:rounded-lg bg-white">
+        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           {teams.length === 0 ? (
             <p className="p-6 text-gray-900">
-              You don't have any teams yet.{" "}
+              You don't have any teams yet.{' '}
               <Link to="new" className="text-indigo-600 hover:underline">
                 Create one
               </Link>
             </p>
           ) : (
-            <table className="min-w-full divide-y divide-gray-200">
-              <tbody className="divide-y divide-gray-200">
-                {teams.map((team) => (
+            <table className="min-w-full divide-gray-200 divide-y">
+              <tbody className="divide-gray-200 divide-y">
+                {teams.map(team => (
                   <TeamTableItem team={team} user={user} key={team.id} />
                 ))}
               </tbody>
@@ -60,7 +60,7 @@ export default function Teams() {
         </div>
       </main>
     </>
-  );
+  )
 }
 
 function TeamTableItem({ team, user }: { team: Team; user: User }) {
@@ -68,19 +68,19 @@ function TeamTableItem({ team, user }: { team: Team; user: User }) {
     <tr>
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="flex items-center">
-          <div className="flex-shrink-0 h-10 w-10">
+          <div className="flex-shrink-0 w-10 h-10">
             <img
-              className="h-10 w-10 rounded-full"
+              className="w-10 h-10 rounded-full"
               src="https://placekitten.com/100/100"
               alt=""
             />
           </div>
           <div className="ml-4">
-            <div className="text-sm font-medium text-gray-900">{team.name}</div>
+            <div className="text-gray-900 text-sm font-medium">{team.name}</div>
           </div>
         </div>
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+      <td className="px-6 py-4 text-right whitespace-nowrap text-sm font-medium">
         <div className="flex justify-end space-x-4">
           {user.id === team.ownerId ? (
             <Link
@@ -97,5 +97,5 @@ function TeamTableItem({ team, user }: { team: Team; user: User }) {
         </div>
       </td>
     </tr>
-  );
+  )
 }

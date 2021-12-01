@@ -1,7 +1,7 @@
-import {NavLink, Outlet, useLoaderData} from 'remix'
-import type {LoaderFunction} from 'remix'
-import {User} from '~/api'
-import {requireUser} from '~/utils/session.server'
+import { NavLink, Outlet, useLoaderData } from 'remix'
+import type { LoaderFunction } from 'remix'
+import { User } from '~/api'
+import { requireUser } from '~/utils/session.server'
 import Footer from '~/components/footer'
 import Header from '~/components/header'
 import clsx from 'clsx'
@@ -10,12 +10,12 @@ type LoaderData = {
   user: User
 }
 
-const navigations: Array<{label: string; path: string}> = [
-  {label: 'Create a team', path: 'new'},
-  {label: 'Invites', path: 'invites'},
+const navigations: Array<{ label: string; path: string }> = [
+  { label: 'Create a team', path: 'new' },
+  { label: 'Invites', path: 'invites' },
 ]
 
-export const loader: LoaderFunction = async ({request}) => {
+export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request)
 
   const data: LoaderData = {
@@ -26,7 +26,7 @@ export const loader: LoaderFunction = async ({request}) => {
 }
 
 export default function Teams() {
-  const {user} = useLoaderData<LoaderData>() ?? {}
+  const { user } = useLoaderData<LoaderData>() ?? {}
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -37,7 +37,7 @@ export default function Teams() {
             <Outlet />
             <aside className="grid-col-1 self-start">
               <div className="w-full bg-white rounded-md focus:outline-none shadow">
-                {navigations.map(({label, path}) => (
+                {navigations.map(({ label, path }) => (
                   <NavItem key={path} path={path} label={label} />
                 ))}
               </div>
@@ -49,12 +49,12 @@ export default function Teams() {
     </div>
   )
 }
-function NavItem({path, label}: {path: string; label: string}) {
+function NavItem({ path, label }: { path: string; label: string }) {
   return (
     <div className="py-1">
       <NavLink
         to={path}
-        className={({isActive}) =>
+        className={({ isActive }) =>
           clsx(
             isActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
             'block px-4 py-2 text-gray-700 hover:text-gray-900 text-sm hover:bg-gray-200',

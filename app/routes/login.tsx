@@ -1,15 +1,15 @@
-import {Form, useActionData, useTransition} from 'remix'
-import type {MetaFunction, ActionFunction, HeadersFunction} from 'remix'
-import {LockClosedIcon} from '@heroicons/react/solid'
+import { Form, useActionData, useTransition } from 'remix'
+import type { MetaFunction, ActionFunction, HeadersFunction } from 'remix'
+import { LockClosedIcon } from '@heroicons/react/solid'
 
 import Logo from '~/components/logo'
-import {createUserSession, login} from '~/utils/session.server'
+import { createUserSession, login } from '~/utils/session.server'
 
 export const meta: MetaFunction = () => {
-  return {title: 'Login | Calenduo', description: 'Login to Calenduo'}
+  return { title: 'Login | Calenduo', description: 'Login to Calenduo' }
 }
 
-export let headers: HeadersFunction = () => {
+export const headers: HeadersFunction = () => {
   return {
     'Cache-Control': `public, max-age=${60 * 10}, s-maxage=${
       60 * 60 * 24 * 30
@@ -39,27 +39,27 @@ type ActionData = {
   fields?: LoginForm
 }
 
-export let action: ActionFunction = async ({
+export const action: ActionFunction = async ({
   request,
 }): Promise<Response | ActionData> => {
-  let {email, password} = Object.fromEntries(await request.formData())
+  const { email, password } = Object.fromEntries(await request.formData())
   if (typeof email !== 'string' || typeof password !== 'string') {
-    return {error: `Form not submitted correctly.`}
+    return { error: `Form not submitted correctly.` }
   }
 
-  let fields = {email, password}
+  const fields = { email, password }
 
-  let emailError = validateEmail(email)
+  const emailError = validateEmail(email)
   if (emailError) {
-    return {error: emailError, fields}
+    return { error: emailError, fields }
   }
 
-  let passwordError = validatePassword(password)
+  const passwordError = validatePassword(password)
   if (passwordError) {
-    return {error: passwordError, fields}
+    return { error: passwordError, fields }
   }
 
-  const accessToken = await login({email, password})
+  const accessToken = await login({ email, password })
 
   if (!accessToken) {
     return {

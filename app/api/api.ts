@@ -336,7 +336,7 @@ export class HttpClient<SecurityDataType = unknown> {
         ...requestParams,
         headers: {
           ...(type && type !== ContentType.FormData
-            ? {'Content-Type': type}
+            ? { 'Content-Type': type }
             : {}),
           ...(requestParams.headers || {}),
         },
@@ -461,7 +461,7 @@ export class Api<
     login: (data: LoginDto, params: RequestParams = {}) =>
       this.request<
         AccessTokenDto,
-        {statusCode: number; message: string; error?: string}
+        { statusCode: number; message: string; error?: string }
       >({
         path: `/auth/login`,
         method: 'POST',
@@ -480,15 +480,16 @@ export class Api<
      * @secure
      */
     me: (params: RequestParams = {}) =>
-      this.request<User, {statusCode: number; message: string; error?: string}>(
-        {
-          path: `/auth/me`,
-          method: 'GET',
-          secure: true,
-          format: 'json',
-          ...params,
-        },
-      ),
+      this.request<
+        User,
+        { statusCode: number; message: string; error?: string }
+      >({
+        path: `/auth/me`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
   }
   teams = {
     /**
@@ -781,7 +782,7 @@ export class Api<
     ) =>
       this.request<
         Review,
-        {statusCode: number; message: string; error?: string}
+        { statusCode: number; message: string; error?: string }
       >({
         path: `/teams/${teamId}/jobs/${jobId}/reviews/${id}`,
         method: 'DELETE',
