@@ -1,5 +1,6 @@
 import { json, Link, useLoaderData } from 'remix'
 import type { LoaderFunction, MetaFunction } from 'remix'
+
 import { api, User } from '~/api'
 import type { Team } from '~/api'
 import { requireAccessToken, requireUser } from '~/utils/session.server'
@@ -43,7 +44,7 @@ export default function Teams() {
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           {teams.length === 0 ? (
             <p className="p-6 text-gray-900">
-              You don't have any teams yet.{' '}
+              You don&apos;t have any teams yet.{' '}
               <Link to="new" className="text-indigo-600 hover:underline">
                 Create one
               </Link>
@@ -89,11 +90,7 @@ function TeamTableItem({ team, user }: { team: Team; user: User }) {
             >
               Settings
             </Link>
-          ) : (
-            <a href="#" className="text-red-600 hover:text-red-900">
-              Leave
-            </a>
-          )}
+          ) : null}
         </div>
       </td>
     </tr>

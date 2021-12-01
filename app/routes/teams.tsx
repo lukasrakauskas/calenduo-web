@@ -1,10 +1,12 @@
 import { NavLink, Outlet, useLoaderData } from 'remix'
 import type { LoaderFunction } from 'remix'
+
+import clsx from 'clsx'
+
 import { User } from '~/api'
-import { requireUser } from '~/utils/session.server'
 import Footer from '~/components/footer'
 import Header from '~/components/header'
-import clsx from 'clsx'
+import { requireUser } from '~/utils/session.server'
 
 type LoaderData = {
   user: User

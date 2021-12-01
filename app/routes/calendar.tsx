@@ -1,8 +1,8 @@
+import { ChevronRightIcon, ChevronLeftIcon } from '@heroicons/react/solid'
 import useCalendar from '@veccu/react-calendar'
+import clsx from 'clsx'
 import { format } from 'date-fns'
 import locale from 'date-fns/locale/en-US'
-import { ChevronRightIcon, ChevronLeftIcon } from '@heroicons/react/solid'
-import clsx from 'clsx'
 
 const Calendar = () => {
   const { cursorDate, headers, body, navigation, view } = useCalendar({

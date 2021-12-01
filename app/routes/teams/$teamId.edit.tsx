@@ -1,3 +1,5 @@
+import { useRef, useState } from 'react'
+
 import {
   Link,
   useTransition,
@@ -15,17 +17,18 @@ import type {
   HeadersFunction,
   ActionFunction,
 } from 'remix'
-import { useRef, useState } from 'react'
+
+import clsx from 'clsx'
+import invariant from 'tiny-invariant'
+
 import { api, Team } from '~/api'
+import Modal from '~/components/modal'
+import { getException } from '~/utils/exception.server'
 import {
   getAccessToken,
   requireAccessToken,
   requireUser,
 } from '~/utils/session.server'
-import clsx from 'clsx'
-import { getException } from '~/utils/exception.server'
-import Modal from '~/components/modal'
-import invariant from 'tiny-invariant'
 
 export const meta: MetaFunction = ({
   data,

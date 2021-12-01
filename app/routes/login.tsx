@@ -1,5 +1,6 @@
-import { Form, useActionData, useTransition } from 'remix'
+import { Form, useActionData, useTransition, Link } from 'remix'
 import type { MetaFunction, ActionFunction, HeadersFunction } from 'remix'
+
 import { LockClosedIcon } from '@heroicons/react/solid'
 
 import Logo from '~/components/logo'
@@ -85,15 +86,6 @@ export default function Login() {
           <h2 className="mt-6 text-center text-gray-900 text-3xl font-extrabold">
             Log in to your account
           </h2>
-          <p className="mt-2 text-center text-gray-600 text-sm">
-            Or{' '}
-            <a
-              href="#"
-              className="hover:text-indigo-500 text-indigo-600 font-medium"
-            >
-              start your 14-day free trial
-            </a>
-          </p>
         </div>
         <Form method="post" className="mt-8 space-y-6">
           <input type="hidden" name="remember" defaultValue="true" />
@@ -146,12 +138,12 @@ export default function Login() {
             </div>
 
             <div className="text-sm">
-              <a
-                href="#"
+              <Link
+                to="/forgot-password"
                 className="hover:text-indigo-500 text-indigo-600 font-medium"
               >
                 Forgot your password?
-              </a>
+              </Link>
             </div>
           </div>
 

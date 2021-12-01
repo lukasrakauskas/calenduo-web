@@ -1,5 +1,6 @@
 import type { MetaFunction, LoaderFunction } from 'remix'
 import { useLoaderData } from 'remix'
+
 import { User } from '~/api'
 import Footer from '~/components/footer'
 import Header from '~/components/header'
@@ -34,7 +35,7 @@ export default function Dashboard() {
       <div className="flex flex-1 mx-auto my-4 px-2 max-w-7xl sm:px-6 sm:w-full lg:px-8">
         <main>
           <h2>Welcome to Calenduo!</h2>
-          <p>We're stoked that you're here. 🥳</p>
+          <p>We&apos;re stoked that you&apos;re here. 🥳</p>
         </main>
       </div>
       <Footer />

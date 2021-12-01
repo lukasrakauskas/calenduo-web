@@ -1,4 +1,5 @@
 import * as React from 'react'
+
 import {
   Links,
   LiveReload,
@@ -159,3 +160,5 @@ const RouteChangeAnnouncement = React.memo(() => {
     </div>
   )
 })
+
+RouteChangeAnnouncement.displayName = 'RouteChangeAnnouncement'

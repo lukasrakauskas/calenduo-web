@@ -1,7 +1,7 @@
-import { json, useLoaderData } from 'remix'
+import { json } from 'remix'
 import type { LoaderFunction, MetaFunction } from 'remix'
-import { api, User } from '~/api'
-import type { Team } from '~/api'
+
+import { api } from '~/api'
 import { requireAccessToken, requireUser } from '~/utils/session.server'
 
 export const meta: MetaFunction = () => {
@@ -9,11 +9,6 @@ export const meta: MetaFunction = () => {
     title: 'Invites to teams | Calenduo',
     description: 'Your invites on Calenduo',
   }
-}
-
-type TeamsData = {
-  user: User
-  teams: Team[]
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -32,8 +27,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function Teams() {
-  const { teams, user } = useLoaderData<TeamsData>()
-
   return (
     <>
       <div className="col-span-3 pb-6 max-w-7xl">

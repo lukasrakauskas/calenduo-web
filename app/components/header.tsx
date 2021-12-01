@@ -1,16 +1,18 @@
 import { Fragment } from 'react'
-import { NavLink, Form } from 'remix'
+
+import { NavLink, Form, Link } from 'remix'
+
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 
-import Logo from './logo'
 import { User } from '~/api'
+
+import Logo from './logo'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard' },
   { name: 'Teams', href: '/teams' },
-  // { name: "Jobs", href: "/jobs" },
   { name: 'Calendar', href: '/calendar' },
 ]
 
@@ -105,28 +107,28 @@ export default function Header({ user }: Props) {
                         <Menu.Items className="absolute right-0 mt-2 py-1 w-48 bg-white rounded-md focus:outline-none shadow-lg origin-top-right ring-1 ring-black ring-opacity-5">
                           <Menu.Item>
                             {({ active }) => (
-                              <a
-                                href="#"
+                              <Link
+                                to="/profile"
                                 className={clsx(
                                   active ? 'bg-gray-100' : '',
                                   'block px-4 py-2 text-gray-700 text-sm',
                                 )}
                               >
                                 Your Profile
-                              </a>
+                              </Link>
                             )}
                           </Menu.Item>
                           <Menu.Item>
                             {({ active }) => (
-                              <a
-                                href="#"
+                              <Link
+                                to="/settings"
                                 className={clsx(
                                   active ? 'bg-gray-100' : '',
                                   'block px-4 py-2 text-gray-700 text-sm',
                                 )}
                               >
                                 Settings
-                              </a>
+                              </Link>
                             )}
                           </Menu.Item>
                           <Menu.Item>
