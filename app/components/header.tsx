@@ -13,7 +13,7 @@ import Logo from './logo'
 const navigation = [
   { name: 'Dashboard', href: '/dashboard' },
   { name: 'Teams', href: '/teams' },
-  { name: 'Calendar', href: '/calendar' },
+  // { name: 'Calendar', href: '/calendar' },
 ]
 
 type Props = {
