@@ -83,6 +83,12 @@ function TeamTableItem({ team, user }: { team: Team; user: User }) {
       </td>
       <td className="px-6 py-4 text-right whitespace-nowrap text-sm font-medium">
         <div className="flex justify-end space-x-4">
+          <Link
+            to={`${team.id}`}
+            className="text-indigo-600 hover:text-indigo-900"
+          >
+            View
+          </Link>
           {user.id === team.ownerId ? (
             <Link
               to={`${team.id}/edit`}

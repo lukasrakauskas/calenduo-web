@@ -10,6 +10,7 @@ import {
   useCatch,
   useParams,
   useLoaderData,
+  useNavigate,
 } from 'remix'
 import type {
   MetaFunction,
@@ -138,6 +139,7 @@ export default function Team() {
   const { team, isOwner } = useLoaderData<LoaderData>() ?? {}
   const errors = useActionData()
   const transition = useTransition()
+  const navigate = useNavigate()
 
   const deleteFormRef = useRef<HTMLFormElement>(null)
   const [slug, setSlug] = useState('')
@@ -208,12 +210,12 @@ export default function Team() {
               </div>
             </div>
             <div className="flex gap-x-2 justify-end px-4 py-3 bg-gray-50 sm:px-6">
-              <Link
-                to="/teams"
+              <button
+                onClick={() => navigate(-1)}
                 className="inline-flex justify-center mt-3 px-4 py-2 w-full text-gray-700 text-base font-medium hover:bg-gray-50 bg-white border border-gray-300 rounded-md focus:outline-none shadow-sm focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
               >
                 Cancel
-              </Link>
+              </button>
 
               <button
                 type="submit"
