@@ -12,6 +12,11 @@
 export interface User {
   email: string
   password: string
+  firstName: string
+  lastName: string
+
+  /** @format date-time */
+  birthDate: string
   roles: ('user' | 'admin')[]
   teams: Team[]
   id: number
@@ -73,6 +78,9 @@ export interface Team {
 export interface CreateUserDto {
   email: string
   password: string
+  firstName: string
+  lastName: string
+  birthDate: string
 }
 
 export interface LoginDto {
@@ -576,6 +584,23 @@ export class Api<
       this.request<Team, any>({
         path: `/teams/${id}`,
         method: 'DELETE',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags teams
+     * @name FindTeamMembers
+     * @request GET:/teams/{id}/members
+     * @secure
+     */
+    findTeamMembers: (id: number, params: RequestParams = {}) =>
+      this.request<User[], any>({
+        path: `/teams/${id}/members`,
+        method: 'GET',
         secure: true,
         format: 'json',
         ...params,
