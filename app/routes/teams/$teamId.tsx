@@ -1,5 +1,5 @@
 import { Link, json, useCatch, useParams, useLoaderData } from 'remix'
-import type { MetaFunction, LoaderFunction, HeadersFunction } from 'remix'
+import type { MetaFunction, LoaderFunction } from 'remix'
 
 import { api, Team, User } from '~/api'
 import { getException } from '~/utils/exception.server'
@@ -47,12 +47,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       members,
       isOwner: user.id === team.ownerId,
     }
-    return json(data, {
-      headers: {
-        'Cache-Control': `public, max-age=${60 * 5}, s-maxage=${60 * 60 * 24}`,
-        Vary: 'Cookie',
-      },
-    })
+    return json(data)
   } catch (error) {
     const exception = getException(error)
 
@@ -61,13 +56,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     }
 
     throw error
-  }
-}
-
-export const headers: HeadersFunction = ({ loaderHeaders }) => {
-  return {
-    'Cache-Control': loaderHeaders.get('Cache-Control') ?? '',
-    Vary: loaderHeaders.get('Vary') ?? '',
   }
 }
 

@@ -1,5 +1,5 @@
 import { Form, useActionData, useTransition } from 'remix'
-import type { MetaFunction, ActionFunction, HeadersFunction } from 'remix'
+import type { MetaFunction, ActionFunction } from 'remix'
 
 import { isString } from '@tool-belt/type-predicates'
 
@@ -9,14 +9,6 @@ import { createUserSession, login } from '~/utils/session.server'
 
 export const meta: MetaFunction = () => {
   return { title: 'Sign up | Calenduo', description: 'Sign up to Calenduo' }
-}
-
-export const headers: HeadersFunction = () => {
-  return {
-    'Cache-Control': `public, max-age=${60 * 10}, s-maxage=${
-      60 * 60 * 24 * 30
-    }`,
-  }
 }
 
 function validateEmail(email: unknown) {

@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react'
 
 import {
-  Link,
   useTransition,
   Form,
   redirect,
@@ -61,12 +60,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     })
 
     const data: LoaderData = { team, isOwner: user.id === team.ownerId }
-    return json(data, {
-      headers: {
-        'Cache-Control': `public, max-age=${60 * 5}, s-maxage=${60 * 60 * 24}`,
-        Vary: 'Cookie',
-      },
-    })
+    return json(data)
   } catch (error) {
     const exception = getException(error)
 
