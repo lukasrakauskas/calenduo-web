@@ -17,7 +17,9 @@ const Logo: FC<Props> = ({ textColor = 'text-gray-900', withText = true }) => {
       className={clsx(textColor, 'title-font flex items-center font-medium')}
     >
       <CalendarIcon className="w-6 h-6" />
-      {withText ? <span className="ml-3 text-xl">Calenduo</span> : null}
+      {withText ? (
+        <span className="ml-3 font-logo text-2xl">Calenduo</span>
+      ) : null}
     </Link>
   )
 }

@@ -16,6 +16,16 @@ import styles from '~/styles/tailwind.css'
 
 export const links: LinksFunction = () => {
   return [
+    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+    {
+      rel: 'preconnect',
+      href: 'https://fonts.gstatic.com',
+      crossOrigin: 'use-credentials',
+    },
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Outfit:wght@500&display=swap',
+    },
     { rel: 'stylesheet', href: 'https://rsms.me/inter/inter.css' },
     { rel: 'stylesheet', href: styles },
   ]
