@@ -1,7 +1,3 @@
 module.exports = {
-  'app/**/*.ts?(x)': [
-    'tsc -p tsconfig.json --noEmit',
-    'eslint --fix',
-    'prettier --write',
-  ],
+  'app/**/*.ts?(x)': ['eslint --fix', 'prettier --write'],
 }
