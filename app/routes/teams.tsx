@@ -35,9 +35,9 @@ export default function Teams() {
       <Header user={user} />
       <div className="flex flex-1 mx-auto my-4 px-2 max-w-7xl sm:px-6 sm:w-full lg:px-8">
         <div className="w-full">
-          <div className="grid gap-x-4 grid-cols-4 py-3">
+          <div className="grid gap-x-4 grid-cols-1 py-3 sm:grid-cols-4">
             <Outlet />
-            <aside className="grid-col-1 self-start">
+            <aside className="col-span-4 self-start order-2 mb-4 w-full sm:col-span-1 sm:order-3">
               <div className="w-full bg-white rounded-md focus:outline-none shadow">
                 {navigations.map(({ label, path }) => (
                   <NavItem key={path} path={path} label={label} />

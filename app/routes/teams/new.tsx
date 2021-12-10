@@ -65,10 +65,10 @@ export default function CreateTeam() {
 
   return (
     <>
-      <div className="col-span-4 pb-6 max-w-7xl">
+      <div className="col-span-4 order-1 mx-4 pb-6 max-w-7xl sm:mx-0">
         <h1 className="text-gray-900 text-3xl font-bold">Create a team</h1>
       </div>
-      <div className="col-span-3">
+      <div className="col-span-4 order-3 sm:col-span-3 sm:order-2">
         <Form method="post">
           <div className="border shadow sm:rounded-md sm:overflow-hidden">
             <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
@@ -123,7 +123,7 @@ export default function CreateTeam() {
                 ) : null}
               </div>
             </div>
-            <div className="flex gap-x-2 justify-end px-4 py-3 bg-gray-50 sm:px-6">
+            <div className="flex flex-col gap-2 justify-end px-4 py-3 bg-gray-50 sm:flex-row sm:px-6">
               <Link
                 to="/teams"
                 className="inline-flex justify-center mt-3 px-4 py-2 w-full text-gray-700 text-base font-medium hover:bg-gray-50 bg-white border border-gray-300 rounded-md focus:outline-none shadow-sm focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"

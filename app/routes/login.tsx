@@ -1,7 +1,10 @@
+import { useEffect } from 'react'
+
 import { Form, useActionData, useTransition, Link } from 'remix'
 import type { MetaFunction, ActionFunction } from 'remix'
 
 import { LockClosedIcon } from '@heroicons/react/solid'
+import { motion, useAnimation } from 'framer-motion'
 
 import Logo from '~/components/logo'
 import { createUserSession, login } from '~/utils/session.server'
@@ -67,6 +70,20 @@ export const action: ActionFunction = async ({
 export default function Login() {
   const transition = useTransition()
   const actionData = useActionData<ActionData>()
+  const controls = useAnimation()
+
+  const hasError = !!actionData?.error
+
+  useEffect(() => {
+    if (hasError) {
+      controls.start(
+        {
+          x: [0, -10, 10, -10, 0],
+        },
+        { duration: 0.3 },
+      )
+    }
+  }, [controls, hasError])
 
   return (
     <div className="flex items-center justify-center px-4 py-12 min-h-full sm:px-6 lg:px-8">
@@ -140,7 +157,8 @@ export default function Login() {
           </div>
 
           <div>
-            <button
+            <motion.button
+              animate={controls}
               type="submit"
               className="group relative flex justify-center px-4 py-2 w-full text-white text-sm font-medium bg-indigo-600 hover:bg-indigo-700 border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               disabled={transition.state === 'submitting'}
@@ -152,7 +170,7 @@ export default function Login() {
                 />
               </span>
               {transition.state === 'submitting' ? 'Logging in...' : 'Log in'}
-            </button>
+            </motion.button>
           </div>
 
           {!!actionData?.error && (

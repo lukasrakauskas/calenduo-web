@@ -37,10 +37,10 @@ export default function Teams() {
 
   return (
     <>
-      <div className="col-span-3 pb-6 max-w-7xl">
+      <div className="col-span-4 order-1 mx-4 pb-6 max-w-7xl sm:mx-0">
         <h1 className="text-gray-900 text-3xl font-bold">Teams</h1>
       </div>
-      <main className="col-span-3">
+      <main className="col-span-4 order-3 sm:col-span-3 sm:order-2">
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           {teams.length === 0 ? (
             <p className="p-6 text-gray-900">

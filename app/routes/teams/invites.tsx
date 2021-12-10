@@ -29,7 +29,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Teams() {
   return (
     <>
-      <div className="col-span-3 pb-6 max-w-7xl">
+      <div className="col-span-4 order-1 mx-4 pb-6 max-w-7xl sm:mx-0">
         <h1 className="text-gray-900 text-3xl font-bold">Invites</h1>
       </div>
     </>

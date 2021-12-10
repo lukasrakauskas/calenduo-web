@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import {
   useTransition,
@@ -9,7 +9,7 @@ import {
   useCatch,
   useParams,
   useLoaderData,
-  useNavigate,
+  Link,
 } from 'remix'
 import type {
   MetaFunction,
@@ -133,20 +133,23 @@ export default function Team() {
   const { team, isOwner } = useLoaderData<LoaderData>() ?? {}
   const errors = useActionData()
   const transition = useTransition()
-  const navigate = useNavigate()
 
   const deleteFormRef = useRef<HTMLFormElement>(null)
   const [slug, setSlug] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  useEffect(() => {
+    console.log(transition)
+  }, [transition])
+
   return (
     <>
-      <div className="col-span-4 pb-6 max-w-7xl">
+      <div className="col-span-4 order-1 mx-4 pb-6 max-w-7xl sm:mx-0">
         <h1 className="text-gray-900 text-3xl font-bold">
           {team?.name} settings
         </h1>
       </div>
-      <div className="col-span-3">
+      <div className="col-span-4 order-3 sm:col-span-3 sm:order-2">
         <Form method="delete">
           <div className="border shadow sm:rounded-md sm:overflow-hidden">
             <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
@@ -203,20 +206,22 @@ export default function Team() {
                 ) : null}
               </div>
             </div>
-            <div className="flex gap-x-2 justify-end px-4 py-3 bg-gray-50 sm:px-6">
-              <button
-                onClick={() => navigate(-1)}
+            <div className="flex flex-col gap-2 justify-end px-4 py-3 bg-gray-50 sm:flex-row sm:px-6">
+              <Link
+                to=".."
                 className="inline-flex justify-center mt-3 px-4 py-2 w-full text-gray-700 text-base font-medium hover:bg-gray-50 bg-white border border-gray-300 rounded-md focus:outline-none shadow-sm focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
               >
                 Cancel
-              </button>
+              </Link>
 
               <button
                 type="submit"
                 className="inline-flex justify-center px-4 py-2 text-white text-sm font-medium bg-indigo-600 hover:bg-indigo-700 border border-transparent rounded-md focus:outline-none shadow-sm focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 disabled={!!transition.submission}
               >
-                {transition.submission ? 'Update...' : 'Update team'}
+                {transition.state === 'submitting'
+                  ? 'Update...'
+                  : 'Update team'}
               </button>
             </div>
           </div>
@@ -226,11 +231,11 @@ export default function Team() {
             <div className="col-span-3 py-5 max-w-7xl">
               <h2 className="text-red-900 text-2xl font-bold">Danger zone</h2>
             </div>
-            <Form method="delete" ref={deleteFormRef}>
+            <Form method="delete" ref={deleteFormRef} className="mb-4">
               <input type="hidden" name="_method" value="delete" />
               <div className="bg-white border border-red-500 shadow sm:rounded-md sm:overflow-hidden">
                 <div className="flex gap-x-2 justify-between p-4 sm:px-6">
-                  <div className="">
+                  <div>
                     <div className="text-gray-900 text-sm font-medium">
                       Delete this team
                     </div>
@@ -240,7 +245,7 @@ export default function Team() {
                   </div>
                   <button
                     type="button"
-                    className="inline-flex justify-center px-4 py-2 w-full text-white text-base font-medium bg-red-600 hover:bg-red-700 border border-transparent rounded-md focus:outline-none shadow-sm focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="flex-0 inline-flex justify-center px-4 py-2 w-full text-white text-base font-medium bg-red-600 hover:bg-red-700 border border-transparent rounded-md focus:outline-none shadow-sm focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={() => setIsModalOpen(true)}
                   >
                     Delete team

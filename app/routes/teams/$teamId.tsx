@@ -64,7 +64,7 @@ export default function Team() {
 
   return (
     <>
-      <div className="flex col-span-3 justify-between pb-6 max-w-7xl">
+      <div className="col-span-4 order-1 mx-4 pb-6 max-w-7xl sm:mx-0">
         <h1 className="text-gray-900 text-3xl font-bold">{team.name}</h1>
 
         <div className="flex space-x-2">
@@ -83,7 +83,7 @@ export default function Team() {
           </Link>
         </div>
       </div>
-      <div className="col-span-3">
+      <div className="col-span-4 order-3 sm:col-span-3 sm:order-2">
         <div className="shadow sm:rounded-md sm:overflow-hidden">
           <dl>
             <div className="px-4 py-5 bg-white sm:grid sm:gap-4 sm:grid-cols-3 sm:px-6">
